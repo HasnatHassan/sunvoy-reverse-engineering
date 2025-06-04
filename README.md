@@ -17,12 +17,14 @@ A TypeScript-based tool for interacting with the SunVoy API, designed to fetch u
 ## Installation
 
 1. Clone the repository:
+
 ```bash
 git clone [repository-url]
 cd sunvoy-reverse-engineering
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
@@ -36,6 +38,7 @@ npm start
 ```
 
 This will:
+
 1. Authenticate with the SunVoy API
 2. Fetch user data
 3. Retrieve current user information
@@ -74,17 +77,6 @@ The project is written in TypeScript and uses modern ES6+ features. To modify th
 ## Output
 
 The application generates a `users.json` file containing:
+
 - List of users
 - Current user information
-
-## License
-
-ISC
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a new Pull Request 
