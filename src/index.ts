@@ -1,5 +1,5 @@
-import { login, loginHtml } from "./api/auth";
-import { fetchUsers } from "./api/user";
+import { login, loginHtml, fetchToken } from "./api/auth";
+import { fetchCurrentUser, fetchUsers } from "./api/user";
 import fs from "fs/promises";
 import path from "path";
 
@@ -9,15 +9,22 @@ async function main() {
     const nonce = await loginHtml();
     const cookie = await login(nonce);
     const users = await fetchUsers(cookie);
+    const tokenData = await fetchToken(cookie);
+
+    const currentUser = await fetchCurrentUser(tokenData);
+    const result = {
+      users,
+      currentUser,
+    };
+
     await fs.writeFile(
       USERS_JSON_PATH,
-      JSON.stringify(users, null, 2),
+      JSON.stringify(result, null, 2),
       "utf-8"
     );
-
-    console.log("✅ Successfully wrote users and current user to users.json");
+    console.log("Successfully wrote users and current user to users.json");
   } catch (error) {
-    console.error("❌ Error:", error);
+    console.error("Error:", error);
   }
 }
 

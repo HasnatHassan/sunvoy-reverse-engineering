@@ -1,5 +1,6 @@
 import axios from "axios";
 import * as cheerio from "cheerio";
+import crypto from "crypto"; // ✅ required for HMAC
 
 export async function login(nonce: string): Promise<string> {
   const response = await axios.post(
@@ -33,4 +34,54 @@ export async function loginHtml(): Promise<string> {
   }
 
   return nonce;
+}
+
+export async function fetchToken(cookie: string) {
+  const response = await axios.get(
+    "https://challenge.sunvoy.com/settings/tokens",
+    {
+      headers: {
+        Cookie: cookie,
+      },
+    }
+  );
+  const $ = cheerio.load(response.data);
+
+  const tokenData: Record<string, string | number> = {
+    access_token: $("#access_token").val(),
+    apiuser: $("#apiuser").val(),
+    language: $("#language").val(),
+    openId: $("#openId").val(),
+    operateId: $("#operateId").val(),
+    userId: $("#userId").val(),
+    timestamp: Math.floor(Date.now() / 1000),
+  };
+
+  const stringFields = [
+    "access_token",
+    "apiuser",
+    "language",
+    "openId",
+    "operateId",
+    "userId",
+  ];
+  for (const field of stringFields) {
+    if (typeof tokenData[field] !== "string") {
+      throw new Error(`Missing or invalid token field: ${field}`);
+    }
+  }
+
+  const payload = Object.keys(tokenData)
+    .sort()
+    .map((key) => `${key}=${encodeURIComponent(tokenData[key] as string)}`)
+    .join("&");
+
+  const hmac = crypto.createHmac("sha1", "mys3cr3t");
+  hmac.update(payload);
+  const checkcode = hmac.digest("hex").toUpperCase();
+
+  return {
+    ...tokenData,
+    checkcode,
+  };
 }
