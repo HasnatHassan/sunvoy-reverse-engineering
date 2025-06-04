@@ -1,5 +1,7 @@
 # SunVoy Reverse Engineering
 
+[📹 Watch Demo Video](https://www.loom.com/share/7bf09f904b874763b7d0530b6b300412?sid=001bf4cd-2104-4ded-b5e8-60deb2799fc9)
+
 A TypeScript-based tool for interacting with the SunVoy API, designed to fetch user data and authentication information.
 
 ## Features
