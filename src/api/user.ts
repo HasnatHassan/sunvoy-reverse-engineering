@@ -11,7 +11,7 @@ export async function fetchUsers(cookie: string) {
 export async function fetchCurrentUser(tokenData: any) {
   const res = await axios.post(
     "https://api.challenge.sunvoy.com/api/settings",
-    qs.stringify(tokenData), // converts the object to URL-encoded form
+    qs.stringify(tokenData),
     {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",

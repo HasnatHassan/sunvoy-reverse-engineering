@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as cheerio from "cheerio";
-import crypto from "crypto"; // ✅ required for HMAC
+import crypto from "crypto";
 
 export async function login(nonce: string): Promise<string> {
   const response = await axios.post(
